@@ -1,4 +1,6 @@
 <!-- NomeDoApp = "Cálculo do APGAR" -->
+<!-- AndroidVersionName = "1.11.10.11"; VersionName = "1.11.10.11" -->
+<!-- AndroidVersionCode = "262840743"; VersionCode = "262840743"; Timestamp = "2026-09-13T10:57:31-03:00" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -33,7 +35,7 @@
 
     body{
       margin:0;
-      font-family:Arial, Helvetica, sans-serif;
+      font-family:"Segoe UI", Roboto, Arial, sans-serif;
       background:#e8f0fe;
       color:var(--texto);
       min-height:100vh;
@@ -79,7 +81,6 @@
       font-size:.88rem;
       font-weight:700;
       letter-spacing:.7px;
-      text-transform:uppercase;
     }
 
     .secao-body{
@@ -99,6 +100,7 @@
     }
 
     .tempo-card{
+      min-width:0;
       border:1.5px solid var(--borda);
       border-radius:12px;
       padding:14px;
@@ -163,12 +165,16 @@
 
     .campo select{
       width:100%;
+      min-width:0;
+      max-width:100%;
+      min-height:44px;
       padding:9px 10px;
       border:1.5px solid var(--borda);
       border-radius:9px;
       background:var(--cinza);
       color:var(--texto);
-      font-size:.92rem;
+      font-size:1rem;
+      font-family:inherit;
     }
 
     .campo select:focus{
@@ -212,12 +218,14 @@
     }
 
     .btn{
+      min-height:44px;
+      font-family:inherit;
       border:none;
       border-radius:10px;
       padding:10px 18px;
       cursor:pointer;
       font-weight:700;
-      font-size:.9rem;
+      font-size:1rem;
     }
 
     .btn-primary{
@@ -287,22 +295,76 @@
   
     .acoes-superior {
       justify-content: center;
-      margin-top: 0;
+      margin-top: 14px;
       margin-bottom: 0;
     }
-  
-    .legal-disclaimer {
-      margin: 16px 0 0;
-      font-size: 12px;
-      line-height: 1.2;
-      color: #5c6f87;
-      text-align: justify;
-      word-break: break-word;
-      background: var(--surface, #ffffff);
-      border: 1px solid var(--border, #cddbea);
-      border-radius: var(--radius-xl, 22px);
-      box-shadow: var(--shadow, 0 16px 34px rgba(18, 44, 73, 0.10));
-      padding: 16px;
+
+    #secaoResumo, .resumo-item{
+      background:linear-gradient(180deg,#fffdfa 0%,#fff8dd 100%);
+    }
+
+    .badge.is-recalculated, .resumo-item .valor.is-recalculated{
+      outline:2px solid #3b82f6;
+      outline-offset:3px;
+    }
+
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+
+    @media(max-width:380px){
+      .grid-tempos{grid-template-columns:minmax(0,1fr)}
+    }
+
+    .legal-disclaimer{
+      margin-top:16px;
+      padding:0;
+      border:1px solid #e2e8f0;
+      border-radius:14px;
+      background:#f8fafc;
+      box-shadow:none;
+      color:#64748b;
+      font-size:.76rem;
+      line-height:1.45;
+      text-align:left;
+      overflow:hidden;
+    }
+    .legal-disclaimer > summary{
+      list-style:none;
+      cursor:pointer;
+      position:relative;
+      padding:11px 38px 11px 13px;
+      color:#5c6f87;
+      font-size:.78rem;
+      font-weight:700;
+      user-select:none;
+    }
+    .legal-disclaimer > summary::-webkit-details-marker{display:none}
+    .legal-disclaimer > summary::after{
+      content:'＋';
+      position:absolute;
+      right:13px;
+      top:50%;
+      transform:translateY(-50%);
+      color:#7b8da0;
+      font-size:.9rem;
+      font-weight:800;
+    }
+    .legal-disclaimer[open] > summary::after{content:'−'}
+    .legal-disclaimer-content{
+      padding:0 13px 12px;
+      border-top:1px solid #edf2f7;
+      padding-top:11px;
+      text-align:justify;
+      overflow-wrap:anywhere;
     }
 
     .signature-block {
@@ -324,43 +386,33 @@
       <div class="espaco-antes-titulo" aria-hidden="true"></div>
       <h1>Cálculo do Apgar</h1>
       <p>Preencha os sinais avaliados em cada minuto do exame.</p>
-    </header>
-
-    <section class="secao">
-      <div class="secao-header">Como usar</div>
-      <div class="secao-body">
-        <div class="intro">
-          Selecione, para cada momento, a pontuação correspondente a frequência cardíaca, esforço respiratório, tônus muscular, irritabilidade reflexa e cor.
-        </div>
+      <div class="acoes acoes-superior">
+        <button type="button" class="btn btn-sec" id="btnLimpar">Limpar dados</button>
       </div>
-    </section>
-    <div class="acoes acoes-superior">
-      <button type="button" class="btn btn-sec" id="btnLimpar">Limpar Seleção</button>
-    </div>
-
-
-
-    <section class="secao">
+    </header>
+    <div id="apgarStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
+<section class="secao">
       <div class="secao-header">Pontuação por tempo</div>
       <div class="secao-body">
         <div id="tempos" class="grid-tempos"></div>
 </div>
     </section>
 
-    <section class="secao">
+    <section class="secao" id="secaoResumo">
       <div class="secao-header">Resumo</div>
       <div class="secao-body">
         <div id="resumo" class="resumo"></div>
       </div>
     </section>
 
-    <div class="legal-disclaimer">
-      <strong>Aviso Legal e Isenção de Responsabilidade:</strong><br>
-      Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.
-    
-    </div>
+    <details class="legal-disclaimer legal-disclaimer-collapsible">
+      <summary>Aviso Legal e Isenção de Responsabilidade</summary>
+      <div class="legal-disclaimer-content">
+        Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.
+      </div>
+    </details>
 
-    <div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong></div>
+    <div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.10.09.13</span></div>
 
     <div class="spacer-3lines" aria-hidden="true"></div>
   </div>
@@ -374,8 +426,8 @@
         { id: '1min', title: '1º minuto' },
         { id: '5min', title: '5º minuto' },
         { id: '10min', title: '10º minuto' },
-        { id: '15min', title: '15 minutos' },
-        { id: '20min', title: '20 minutos' }
+        { id: '15min', title: '15º minuto' },
+        { id: '20min', title: '20º minuto' }
       ];
 
       const CRITERIA = [
@@ -439,15 +491,15 @@
       const DOM = {
         timesContainer: document.getElementById('tempos'),
         summaryContainer: document.getElementById('resumo'),
-        clearButton: document.getElementById('btnLimpar')
+        clearButton: document.getElementById('btnLimpar'),
+        status: document.getElementById('apgarStatus')
       };
 
-      // state
-      const UI_STATE = {
-        rawInputsByTime: {},
-        totalsByTime: {},
-        visibleTimes: new Set(BASE_VISIBLE_TIMES)
-      };
+      const outputTotals = new Map();
+      const lastCompletedTotals = new Map();
+      const highlightTimers = new Map();
+      let keyboardSelection = null;
+      let tabSelection = null;
 
       // parsers
       function parseScoreValue(rawValue) {
@@ -527,6 +579,11 @@
         return classification == null ? DEFAULT_TEXT : classification.text;
       }
 
+      function formatProgressText(rawValues) {
+        const filled = rawValues.filter((rawValue) => rawValue !== '').length;
+        return `${filled} de ${CRITERIA.length} critérios preenchidos`;
+      }
+
       // ui renderers
       function createOptionMarkup(option) {
         return `<option value="${option.value}">${option.value} — ${option.label}</option>`;
@@ -551,13 +608,13 @@
         const criteriaMarkup = CRITERIA.map((criterion) => createCriterionMarkup(time.id, criterion)).join('');
 
         return `
-          <article class="tempo-card" id="card_${time.id}" data-tempo="${time.id}">
+          <article class="tempo-card" id="card_${time.id}" data-tempo="${time.id}" role="group" aria-labelledby="titulo_${time.id}">
             <div class="tempo-header">
-              <div class="tempo-titulo">${time.title}</div>
+              <div class="tempo-titulo" id="titulo_${time.id}">${time.title}</div>
               <div class="badge" id="badge_${time.id}">${EMPTY_VALUE_TEXT}</div>
             </div>
             ${criteriaMarkup}
-            <div id="interpretacao_${time.id}" class="interpretacao">${DEFAULT_TEXT}</div>
+            <div id="interpretacao_${time.id}" class="interpretacao">${formatProgressText([])}</div>
           </article>
         `;
       }
@@ -606,19 +663,35 @@
         }
       }
 
+      function clearTimeHighlight(timeId) {
+        clearTimeout(highlightTimers.get(timeId));
+        highlightTimers.delete(timeId);
+        getBadgeElement(timeId).classList.remove('is-recalculated');
+        getSummaryCardElement(timeId).querySelector('.valor').classList.remove('is-recalculated');
+      }
+
+      function highlightTimeResult(timeId) {
+        clearTimeHighlight(timeId);
+        getBadgeElement(timeId).classList.add('is-recalculated');
+        getSummaryCardElement(timeId).querySelector('.valor').classList.add('is-recalculated');
+        highlightTimers.set(timeId, setTimeout(() => clearTimeHighlight(timeId), 1000));
+      }
+
       function resetTimeOutput(timeId) {
         const badgeElement = getBadgeElement(timeId);
         const interpretationElement = getInterpretationElement(timeId);
         const summaryElement = getSummaryCardElement(timeId);
 
+        clearTimeHighlight(timeId);
         badgeElement.textContent = EMPTY_VALUE_TEXT;
         badgeElement.className = 'badge';
 
-        interpretationElement.textContent = DEFAULT_TEXT;
+        interpretationElement.textContent = formatProgressText(getRawValuesForTime(timeId));
         interpretationElement.className = 'interpretacao';
 
         summaryElement.querySelector('.valor').textContent = EMPTY_VALUE_TEXT;
         summaryElement.querySelector('.texto').textContent = DEFAULT_TEXT;
+        outputTotals.set(timeId, null);
       }
 
       function renderTimeResult(timeId, total, classification) {
@@ -626,14 +699,26 @@
         const interpretationElement = getInterpretationElement(timeId);
         const summaryElement = getSummaryCardElement(timeId);
 
-        badgeElement.textContent = formatBadgeValue(total);
-        badgeElement.className = `badge ${classification.badgeClass}`;
+        const previousTotal = outputTotals.get(timeId);
+        const previousCompletedTotal = lastCompletedTotals.get(timeId);
 
-        interpretationElement.textContent = formatInterpretationText(classification, total);
-        interpretationElement.className = `interpretacao ${classification.cssClass}`;
+        if (previousTotal !== total) {
+          badgeElement.textContent = formatBadgeValue(total);
+          badgeElement.className = `badge ${classification.badgeClass}`;
 
-        summaryElement.querySelector('.valor').textContent = formatBadgeValue(total);
-        summaryElement.querySelector('.texto').textContent = formatSummaryText(classification);
+          interpretationElement.textContent = formatInterpretationText(classification, total);
+          interpretationElement.className = `interpretacao ${classification.cssClass}`;
+
+          summaryElement.querySelector('.valor').textContent = formatBadgeValue(total);
+          summaryElement.querySelector('.texto').textContent = formatSummaryText(classification);
+        }
+
+        if (Number.isFinite(previousCompletedTotal) && previousCompletedTotal !== total) {
+          highlightTimeResult(timeId);
+        }
+
+        outputTotals.set(timeId, total);
+        lastCompletedTotals.set(timeId, total);
       }
 
       // state sync
@@ -645,14 +730,6 @@
         return getSelectElementsForTime(timeId).map((selectElement) => selectElement.value);
       }
 
-      function syncStateSnapshot() {
-        TIMES.forEach((time) => {
-          UI_STATE.rawInputsByTime[time.id] = getRawValuesForTime(time.id);
-          UI_STATE.totalsByTime[time.id] = calculateCompletedTotal(UI_STATE.rawInputsByTime[time.id]);
-        });
-
-        UI_STATE.visibleTimes = calculateVisibleTimesFromTotals(UI_STATE.totalsByTime);
-      }
 
       // event handlers
       function clearTimeSelections(timeId) {
@@ -693,14 +770,12 @@
         TIMES.forEach((time) => {
           const shouldShow = visibleTimes.has(time.id);
           setVisibility(time.id, shouldShow);
-
-          if (!shouldShow && !BASE_VISIBLE_TIMES.has(time.id)) {
-            clearTimeSelections(time.id);
-          }
         });
       }
 
       function calculateAllTimes() {
+        const previousTotals = new Map(outputTotals);
+        const announcements = [];
         applyVisibilityRules();
 
         TIMES.forEach((time) => {
@@ -708,20 +783,30 @@
 
           if (isVisible) {
             calculateTime(time.id);
+            const total = outputTotals.get(time.id);
+            const previousTotal = previousTotals.get(time.id);
+            if (total !== previousTotal && (total != null || previousTotal != null)) {
+              announcements.push(`${time.title}: ${getInterpretationElement(time.id).textContent}`);
+            }
           } else {
             resetTimeOutput(time.id);
           }
         });
 
-        syncStateSnapshot();
+        if (announcements.length > 0) {
+          DOM.status.textContent = announcements.join(' ');
+        }
       }
 
       function clearAllSelections() {
-        document.querySelectorAll('select[data-tempo]').forEach((selectElement) => {
-          selectElement.value = '';
-        });
-
+        keyboardSelection = null;
+        tabSelection = null;
+        lastCompletedTotals.clear();
+        outputTotals.clear();
+        TIMES.forEach((time) => clearTimeSelections(time.id));
+        DOM.status.textContent = '';
         calculateAllTimes();
+        document.getElementById(`${TIMES[0].id}_${CRITERIA[0].key}`).focus();
       }
 
       // bootstrap
@@ -732,12 +817,62 @@ function handleClearClick() {
       function handleFieldChange(event) {
         if (event.target.matches('select[data-tempo]')) {
           calculateAllTimes();
+          if (keyboardSelection !== event.target && tabSelection !== event.target) {
+            focusNextSelection(event.target);
+          }
         }
+      }
+
+      function focusNextSelection(currentSelect) {
+        if (currentSelect.value === '') return;
+        const visibleSelects = Array.from(document.querySelectorAll('select[data-tempo]'))
+          .filter((selectElement) => !selectElement.disabled &&
+            !getTimeCardElement(selectElement.dataset.tempo).classList.contains('is-hidden'));
+        const currentIndex = visibleSelects.indexOf(currentSelect);
+        if (currentIndex < 0) return;
+        const nextSelect = visibleSelects.slice(currentIndex + 1)
+          .concat(visibleSelects.slice(0, currentIndex + 1))
+          .find((selectElement) => selectElement.value === '');
+        if (!nextSelect) return;
+        nextSelect.focus({ preventScroll: true });
+        nextSelect.closest('.campo').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+      }
+
+      function handleSelectionKeyDown(event) {
+        if (!event.target.matches('select[data-tempo]')) return;
+        if (event.key === 'Tab') {
+          tabSelection = event.target;
+          keyboardSelection = null;
+        } else if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) {
+          keyboardSelection = event.target;
+        }
+      }
+
+      function handleSelectionKeyUp(event) {
+        if (event.key === 'Tab' || event.key === 'Escape') {
+          keyboardSelection = null;
+          tabSelection = null;
+          return;
+        }
+        if (event.key === 'Enter' && keyboardSelection === event.target && event.target.matches('select[data-tempo]')) {
+          keyboardSelection = null;
+          tabSelection = null;
+          calculateAllTimes();
+          focusNextSelection(event.target);
+        }
+      }
+
+      function handleSelectionPointerDown() {
+        keyboardSelection = null;
+        tabSelection = null;
       }
 
       function bindEvents() {
 DOM.clearButton.addEventListener('click', handleClearClick);
         document.addEventListener('change', handleFieldChange);
+        document.addEventListener('keydown', handleSelectionKeyDown);
+        document.addEventListener('keyup', handleSelectionKeyUp);
+        document.addEventListener('pointerdown', handleSelectionPointerDown);
       }
 
       function initializeScreen() {
