@@ -1,6 +1,6 @@
 <!-- NomeDoApp = "Cálculo do APGAR" -->
-<!-- AndroidVersionName = "1.012.10.16"; VersionName = "1.012.10.16" -->
-<!-- AndroidVersionCode = "262890807"; VersionCode = "262890807"; Timestamp = "2026-10-16T08:07:25.089273-03:00" -->
+<!-- AndroidVersionName = "1.012.10.20"; VersionName = "1.012.10.20" -->
+<!-- AndroidVersionCode = "262930740"; VersionCode = "262930740"; Timestamp = "2026-10-20T07:40:21-03:00" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -412,7 +412,7 @@
       </div>
     </details>
 
-    <div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.012.10.16</span></div>
+    <div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.012.10.20</span></div>
 
     <div class="spacer-3lines" aria-hidden="true"></div>
   </div>
@@ -809,14 +809,56 @@
         document.getElementById(`${TIMES[0].id}_${CRITERIA[0].key}`).focus();
       }
 
+
+      // Minimal input-state persistence for Android WebView and normal browsers.
+      // Scoring, conditional time logic and all clinical labels remain unchanged.
+      const APP_STATE_SCHEMA_VERSION = 1;
+      const APP_STATE_STORAGE_KEY = 'apgar_inputs_v1';
+      function captureCurrentState() {
+        const selections = {};
+        document.querySelectorAll('select[data-tempo]').forEach((element) => {
+          selections[element.id] = element.value;
+        });
+        return { schema: APP_STATE_SCHEMA_VERSION, selections, scrollY: Math.max(0, window.scrollY || 0) };
+      }
+      function persistCurrentState() {
+        try { localStorage.setItem(APP_STATE_STORAGE_KEY, JSON.stringify(captureCurrentState())); }
+        catch (_storageError) { /* Keep the clinical form usable even if storage is unavailable. */ }
+      }
+      function restoreCurrentState() {
+        let snapshot;
+        try {
+          const saved = localStorage.getItem(APP_STATE_STORAGE_KEY);
+          if (!saved) return false;
+          snapshot = JSON.parse(saved);
+        } catch (_storageError) { return false; }
+        if (!snapshot || snapshot.schema !== APP_STATE_SCHEMA_VERSION ||
+            !snapshot.selections || typeof snapshot.selections !== 'object') return false;
+        let restored = 0;
+        document.querySelectorAll('select[data-tempo]').forEach((element) => {
+          const proposed = snapshot.selections[element.id];
+          if (typeof proposed === 'string' && ['', '0', '1', '2'].includes(proposed)) {
+            element.value = proposed;
+            restored++;
+          }
+        });
+        calculateAllTimes();
+        if (Number.isFinite(snapshot.scrollY) && snapshot.scrollY >= 0) {
+          requestAnimationFrame(() => window.scrollTo(0, snapshot.scrollY));
+        }
+        return restored > 0;
+      }
+
       // bootstrap
 function handleClearClick() {
         clearAllSelections();
+        persistCurrentState();
       }
 
       function handleFieldChange(event) {
         if (event.target.matches('select[data-tempo]')) {
           calculateAllTimes();
+          persistCurrentState();
           if (keyboardSelection !== event.target && tabSelection !== event.target) {
             focusNextSelection(event.target);
           }
@@ -873,12 +915,18 @@ DOM.clearButton.addEventListener('click', handleClearClick);
         document.addEventListener('keydown', handleSelectionKeyDown);
         document.addEventListener('keyup', handleSelectionKeyUp);
         document.addEventListener('pointerdown', handleSelectionPointerDown);
+        window.addEventListener('pagehide', persistCurrentState);
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'hidden') persistCurrentState();
+        });
       }
 
       function initializeScreen() {
         buildInterface();
         bindEvents();
-        clearAllSelections();
+        if (!restoreCurrentState()) {
+          clearAllSelections();
+        }
       }
 
       initializeScreen();
