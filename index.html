@@ -1,6 +1,6 @@
 <!-- NomeDoApp = "Cálculo do APGAR" -->
-<!-- AndroidVersionName = "1.012.10.20"; VersionName = "1.012.10.20" -->
-<!-- AndroidVersionCode = "262930740"; VersionCode = "262930740"; Timestamp = "2026-10-20T07:40:21-03:00" -->
+<!-- AndroidVersionName = "1.014.11.01"; VersionName = "1.014.11.01" -->
+<!-- AndroidVersionCode = "262930740"; VersionCode = "262930740"; Timestamp = "2026-10-29T11:21:06-03:00" -->
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -35,7 +35,7 @@
 
     body{
       margin:0;
-      font-family:"Segoe UI", Roboto, Arial, sans-serif;
+      font-family:Arial, Helvetica, sans-serif;
       background:#e8f0fe;
       color:var(--texto);
       min-height:100vh;
@@ -59,6 +59,19 @@
       margin:0;
       font-size:1.9rem;
       color:var(--azul);
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:nowrap;
+      gap:8px;
+      line-height:1.15;
+      text-align:center;
+    }
+    .app-title-emoji{
+      display:inline-block;
+      flex:0 0 auto;
+      font-size:1em;
+      line-height:1;
     }
 
     header p{
@@ -115,7 +128,9 @@
       margin-bottom:12px;
     }
 
-    .tempo-titulo{
+         .tempo-card.followup-time{border-style:dashed}
+     .tempo-card.followup-time .tempo-titulo{color:var(--azul-med)}
+     .tempo-titulo{
       font-size:1rem;
       font-weight:700;
       color:var(--azul);
@@ -177,10 +192,15 @@
       font-family:inherit;
     }
 
+    /* Campos ainda não preenchidos: azul um pouco mais intenso que o fundo da página. */
+    .campo select.is-unselected{
+      background:#C7DDF8;
+      border-color:#8FB5E4;
+    }
+
     .campo select:focus{
       outline:none;
       border-color:var(--azul-med);
-      background:#fff;
     }
 
     .interpretacao{
@@ -197,16 +217,19 @@
     .interpretacao.baixo{
       background:var(--vermelho-bg);
       color:var(--vermelho);
+       border-color:#fca5a5;
     }
 
     .interpretacao.intermediario{
       background:var(--amarelo-bg);
       color:var(--amarelo);
+       border-color:#fde047;
     }
 
     .interpretacao.bom{
       background:var(--verde-bg);
       color:var(--verde);
+       border-color:#86efac;
     }
 
     .acoes{
@@ -293,14 +316,38 @@
       height:1em;
     }
   
+    /* Cabeçalho: cartão de título equivalente ao hero do Ballard. */
+    .hero-apgar{
+      background:linear-gradient(135deg,#f8fbff,#dbeafe);
+      border:1px solid #cbd5e1;
+      border-radius:22px;
+      box-shadow:0 16px 34px rgba(18,44,73,.10);
+      padding:20px;
+    }
+    .hero-apgar h1{
+      font-size:clamp(1.35rem,3.5vw,2.05rem);
+      line-height:1.15;
+      letter-spacing:-0.5px;
+    }
+    .hero-apgar p{
+      margin:4px auto 0;
+      color:#61778f;
+      font-size:.92rem;
+      line-height:1.55;
+      max-width:64ch;
+    }
+
     .acoes-superior {
       justify-content: center;
       margin-top: 14px;
       margin-bottom: 0;
     }
 
-    #secaoResumo, .resumo-item{
-      background:linear-gradient(180deg,#fffdfa 0%,#fff8dd 100%);
+    #secaoResumo{
+      background:linear-gradient(180deg,#ffffff 0%,#eff6ff 100%);
+    }
+    .resumo-item{
+      background:#FFF4CC;
     }
 
     .badge.is-recalculated, .resumo-item .valor.is-recalculated{
@@ -337,6 +384,8 @@
       text-align:left;
       overflow:hidden;
     }
+    /* Aproxima exclusivamente Referências e Aviso Legal. */
+    #referencesDetails + #legalDetails{margin-top:-10px}
     .legal-disclaimer > summary{
       list-style:none;
       cursor:pointer;
@@ -378,43 +427,161 @@
     .spacer-3lines {
       height: 4.2em;
     }
+
+    /* Ações superiores: botão Limpar e idioma lado a lado, inclusive em telas estreitas. */
+    .acoes-superior{display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;gap:10px}
+    .acoes-superior #btnLimpar{white-space:nowrap;flex:0 0 auto}
+    .idioma-control{display:flex;align-items:center;gap:7px;min-width:0;white-space:nowrap}
+    .idioma-control label{font-weight:600;font-size:.92rem;color:var(--texto)}
+    .idioma-control select{min-height:44px;width:128px;min-width:120px;box-sizing:border-box;border:1.5px solid #CBD5E1;border-radius:10px;background-color:#FFFFFF;color:#264764;font:inherit;padding:8px 9px;color-scheme:light;cursor:pointer}
+    .idioma-control select:focus-visible{outline:2px solid #2563A8;outline-offset:2px}
+    @media(max-width:370px){
+      .acoes-superior{gap:7px}
+      .acoes-superior #btnLimpar{font-size:.85rem;padding:9px 11px}
+      .idioma-control{gap:5px}
+      .idioma-control label{font-size:.84rem}
+      .idioma-control select{width:120px;font-size:.86rem;padding:8px 6px}
+    }
+    /* Botão superior Limpar dados: aparência idêntica ao Ballard. */
+    .acoes-superior #btnLimpar{
+      border:1px solid #CBD5E1;
+      background:#F1F5F9;
+      border-radius:10px;
+      padding:10px 14px;
+      min-width:44px;
+      min-height:44px;
+      font-family:Arial,Helvetica,sans-serif;
+      font-size:1rem;
+      font-weight:700;
+      color:#1E293B;
+      cursor:pointer;
+      touch-action:manipulation;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .acoes-superior #btnLimpar:hover{background:#F1F5F9}
+    .acoes-superior #btnLimpar:active{transform:translateY(1px)}
+    .acoes-superior #btnLimpar:focus-visible{outline:3px solid #2563a8;outline-offset:2px}
+    @media(max-width:380px){
+      .acoes-superior #btnLimpar{padding:10px 9px;font-size:.93rem}
+    }
+    .reference-content{overflow-wrap:anywhere}
+    .reference-content a{overflow-wrap:anywhere;color:#1456a0}
+    .reference-list{margin:0;padding-left:19px;line-height:1.55}
+    .reference-list li{overflow-wrap:anywhere}
+    .reference-list li+li{margin-top:12px}
+     .restored-data-notice{margin-top:12px;padding:11px 12px;border:1px solid #B45309;border-radius:10px;background:#FDE68A;color:#713F12;text-align:left;font-size:13.5px;line-height:1.4;display:flex;flex-direction:column;gap:4px}
+     .restored-data-notice strong{font-weight:600;font-size:14px}
+     .restored-data-notice.warning{background:#FCD34D;color:#78350F;border-color:#B45309}
+     .restored-data-notice .notice-heading{display:flex;align-items:center;gap:8px}
+     .restored-data-notice .notice-line{display:block}
+     .restored-data-notice .notice-heading svg{width:18px;height:18px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+     .campo select.recovery-invalid{border-color:#d97706;outline:2px solid #fde047}
+     .progress-indicator{font-size:.78rem;color:#475569;margin-top:5px;font-weight:600}
+     .followup-note{padding:11px 13px;border:1px solid #93c5fd;background:#dbeafe;color:#1e40af;border-radius:10px;margin:0 0 12px;font-size:.88rem;line-height:1.4}
+     /* Resultado principal: preservar tipografia original e fundo #FFF4CC. */
+     /* Texto do resumo: preservar peso original. */
+     .btn-topo .arrow-symbol{font-size:22px;line-height:1}
+.acoes-inferior{margin-top:0;justify-content:flex-start;align-items:center}
+    #acoesResumoEntrada{margin-top:16px}
+    .acoes-inferior .btn-topo{margin-left:auto}
+    .btn-topo{
+      width:48px;
+      min-width:48px;
+      min-height:44px;
+      padding:8px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--borda);
+      border-radius:10px;
+      background:#eef3f8;
+      color:var(--azul);
+    }
+    .btn-topo svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+    .btn-topo:focus-visible{outline:3px solid var(--azul-med);outline-offset:2px}
+    .versao-rodape{position:relative;min-height:48px;display:flex;align-items:center;justify-content:center}
+    .versao-rodape .signature-block{margin:0;padding:0 54px;width:100%;text-align:center}
+    .versao-rodape .btn-topo{position:absolute;right:0;top:50%;transform:translateY(-50%)}
+    #secaoResumo{scroll-margin-top:18px}
+    @media(max-width:380px){
+      .restored-data-notice{padding:10px 11px;font-size:13px}
+    }
   </style>
 </head>
 <body>
   <div class="wrapper">
     <header>
       <div class="espaco-antes-titulo" aria-hidden="true"></div>
-      <h1>Cálculo do Apgar</h1>
-      <p>Preencha os sinais avaliados em cada minuto do exame.</p>
+      <div class="hero-apgar">
+        <h1><span class="app-title-emoji" aria-hidden="true">👶</span><span id="appTitle">Cálculo do Apgar</span></h1>
+        <p id="appSubtitle">Preencha os sinais avaliados em cada minuto do exame.</p>
+      </div>
       <div class="acoes acoes-superior">
         <button type="button" class="btn btn-sec" id="btnLimpar">Limpar dados</button>
+        <div class="idioma-control">
+          <label for="languageSelect" id="languageLabel">Idioma</label>
+          <select id="languageSelect" aria-label="Selecionar idioma">
+            <option value="pt-BR">Português</option>
+            <option value="en-US">English</option>
+          </select>
+        </div>
+      </div>
+      <div id="restoredDataNotice" class="restored-data-notice is-hidden" role="status" aria-live="polite">
+        <span class="notice-heading"><svg id="restoredDataIcon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v5M12 8h.01"/></svg><strong id="restoredDataTitle">Dados recuperados</strong></span>
+        <span id="restoredDataInstruction">Dados da sessão anterior recuperados. Confira as informações antes de continuar.</span>
+       <span id="restoredDataInstructionSecond" class="notice-line is-hidden"></span>
       </div>
     </header>
     <div id="apgarStatus" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
 <section class="secao">
-      <div class="secao-header">Pontuação por tempo</div>
+      <div class="secao-header" id="scoringHeader">Pontuação por tempo</div>
       <div class="secao-body">
+        <div id="followupNote" class="followup-note is-hidden" role="status"></div>
         <div id="tempos" class="grid-tempos"></div>
+        <div class="acoes acoes-inferior" id="acoesResumoEntrada">
+          <button type="button" class="btn btn-primary" id="btnVerResumo">Ir ao resumo</button>
+          <button type="button" class="btn btn-sec" id="btnLimparInferior">Limpar</button>
+          <button type="button" class="btn btn-topo" id="btnTopoEntrada" aria-label="Voltar ao início" title="Voltar ao início">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+          </button>
+        </div>
 </div>
     </section>
 
     <section class="secao" id="secaoResumo">
-      <div class="secao-header">Resumo</div>
+      <div class="secao-header" id="summaryHeader">Resumo</div>
       <div class="secao-body">
         <div id="resumo" class="resumo"></div>
+        <p class="nota" id="apgarClinicalNote">O Apgar descreve o estado do recém-nascido em cada momento. Isoladamente, não determina reanimação, diagnóstico de asfixia ou prognóstico individual. Registre as intervenções de reanimação realizadas.</p>
       </div>
     </section>
 
-    <details class="legal-disclaimer legal-disclaimer-collapsible">
-      <summary>Aviso Legal e Isenção de Responsabilidade</summary>
-      <div class="legal-disclaimer-content">
+    <details class="legal-disclaimer legal-disclaimer-collapsible" id="referencesDetails">
+      <summary id="referencesSummary">Referências</summary>
+      <div class="legal-disclaimer-content reference-content">
+        <ol class="reference-list">
+          <li>AMERICAN ACADEMY OF PEDIATRICS; AMERICAN COLLEGE OF OBSTETRICIANS AND GYNECOLOGISTS. The Apgar Score. <em>Pediatrics</em>, v. 136, n. 4, p. 819-822, 2015. DOI: 10.1542/peds.2015-2651. <span class="reference-available">Disponível em:</span> <a href="https://publications.aap.org/pediatrics/article/136/4/819/73821/The-Apgar-Score" target="_blank" rel="noopener noreferrer">https://publications.aap.org/pediatrics/article/136/4/819/73821/The-Apgar-Score</a>. <span class="reference-access">Acesso em: 26 out. 2026.</span></li>
+          <li>ALMEIDA, Maria Fernanda Branco de; GUINSBURG, Ruth; COORDENADORES ESTADUAIS DO PRN-SBP; GRUPO EXECUTIVO DO PRN-SBP; DEPARTAMENTO DE NEONATOLOGIA DA SBP. <em>Reanimação do recém-nascido ≥34 semanas em sala de parto: Diretrizes 2026 da Sociedade Brasileira de Pediatria</em>. Rio de Janeiro: SBP, 2026. 58 f. DOI: <a href="https://doi.org/10.25060/PRN-SBP-2026-1" target="_blank" rel="noopener noreferrer">10.25060/PRN-SBP-2026-1</a>. <span class="reference-available">Disponível em:</span> <a href="https://www.sbp.com.br/wp-content/uploads/2026/06/PRN-SBP-Diretrizes-2026-Reanimacao-RN-igual-maior-34-semanas-12junho2026.pdf" target="_blank" rel="noopener noreferrer">https://www.sbp.com.br/wp-content/uploads/2026/06/PRN-SBP-Diretrizes-2026-Reanimacao-RN-igual-maior-34-semanas-12junho2026.pdf</a>. <span class="reference-access" data-access-pt="Acesso em: 29 out. 2026." data-access-en="Accessed on: October 29, 2026.">Acesso em: 29 out. 2026.</span></li>
+          <li>AMERICAN ACADEMY OF PEDIATRICS (AAP). Neonatal Resuscitation Program (NRP). <span data-ref-pt="Página oficial do programa de reanimação neonatal." data-ref-en="Official neonatal resuscitation program website.">Página oficial do programa de reanimação neonatal.</span> <span class="reference-available">Disponível em:</span> <a href="https://www.aap.org/en/learning/neonatal-resuscitation-program/" target="_blank" rel="noopener noreferrer">https://www.aap.org/en/learning/neonatal-resuscitation-program/</a>. <span class="reference-access">Acesso em: 26 out. 2026.</span></li>
+          <li>APGAR, Virginia. A proposal for a new method of evaluation of the newborn infant. <em>Current Researches in Anesthesia &amp; Analgesia</em>, v. 32, n. 4, p. 260-267, 1953. PMID: 13083014. <span class="reference-available">Disponível em:</span> <a href="https://pubmed.ncbi.nlm.nih.gov/13083014/" target="_blank" rel="noopener noreferrer">https://pubmed.ncbi.nlm.nih.gov/13083014/</a>. <span class="reference-access">Acesso em: 26 out. 2026.</span></li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="legal-disclaimer legal-disclaimer-collapsible" id="legalDetails">
+      <summary id="legalSummary">Aviso Legal e Isenção de Responsabilidade</summary>
+      <div class="legal-disclaimer-content" id="legalContent">
         Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.
       </div>
     </details>
 
-    <div class="signature-block"><strong>Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.012.10.20</span></div>
+    <div class="versao-rodape">
+      <div class="signature-block"><strong id="developerName">Desenvolvido por Adão L. L. Couto</strong><br><span class="version-name">1.014.11.01</span></div>
+      <button type="button" class="btn btn-topo" id="btnTopoRodape" aria-label="Voltar ao início" title="Voltar ao início">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+      </button>
+    </div>
 
-    <div class="spacer-3lines" aria-hidden="true"></div>
   </div>
 
   <script>
@@ -445,8 +612,8 @@
           label: 'Esforço respiratório',
           options: [
             { value: 0, label: 'Ausente' },
-            { value: 1, label: 'Fraco ou irregular' },
-            { value: 2, label: 'Bom choro' }
+            { value: 1, label: 'Respiração irregular' },
+            { value: 2, label: 'Respiração regular / choro forte' }
           ]
         },
         {
@@ -463,8 +630,8 @@
           label: 'Irritabilidade reflexa',
           options: [
             { value: 0, label: 'Sem resposta' },
-            { value: 1, label: 'Esboço de resposta' },
-            { value: 2, label: 'Choro, tosse ou espirro' }
+            { value: 1, label: 'Careta' },
+            { value: 2, label: 'Choro ou movimento de retirada' }
           ]
         },
         {
@@ -478,14 +645,130 @@
         }
       ];
 
+      // Both languages share the same scoring thresholds and stored input schema.
+      const LANGUAGE_STORAGE_KEY = 'apgar.language.v1';
+      const EN_TIME_TITLES = Object.freeze({
+        '1min': '1st minute', '5min': '5th minute', '10min': '10th minute',
+        '15min': '15th minute', '20min': '20th minute'
+      });
+      const EN_CRITERIA = Object.freeze({
+        fc: { label: 'Heart rate', options: ['Absent', 'Below 100 bpm', '100 bpm or more'] },
+        resp: { label: 'Respiratory effort', options: ['Absent', 'Irregular breathing', 'Regular breathing / strong cry'] },
+        tonus: { label: 'Muscle tone', options: ['Flaccid', 'Some flexion of extremities', 'Good flexion / active movement'] },
+        reflexo: { label: 'Reflex irritability', options: ['No response', 'Grimace', 'Cry or withdrawal movement'] },
+        cor: { label: 'Color', options: ['Cyanotic or pale', 'Acrocyanosis', 'Pink'] }
+      });
+      const TEXTS = Object.freeze({
+        'pt-BR': {
+          pageTitle: 'Cálculo do Apgar', subtitle: 'Preencha os sinais avaliados em cada minuto do exame.',
+          reset: 'Limpar', resetTop: 'Limpar dados', language: 'Idioma', selectLanguage: 'Selecionar idioma', backToTop: 'Voltar ao início',
+          restoredTitle: 'Dados recuperados', restoredInstruction: 'Dados da sessão anterior recuperados. Confira as informações antes de continuar.',
+           preexistingTitle:'Dados preexistentes',preexistingInstruction:'Existem dados preenchidos. Confira os valores antes de calcular.',reviewTitle:'Dados que exigem revisão',reviewInstruction:'Alguns dados recuperados precisam de revisão. Verifique os campos destacados.',previousTitle:'Resultados anteriores',previousInstruction:'Dados e resultados anteriores foram recuperados.',previousInstructionSecond:'Confirme as informações antes de utilizar os resultados.',viewSummary:'Ir ao resumo',followup:'Apgar inferior a 7 no 5º minuto: registre também a pontuação a cada 5 minutos, até o 20º minuto.',progress:'critérios preenchidos',
+          scoring: 'Pontuação por tempo', summary: 'Resumo', select: 'Selecione',
+          default: 'Sem classificação ainda.', totalScore: 'Escore total',
+          severe: 'Pontuação baixa (0 a 3).', moderate: 'Pontuação intermediária (4 a 6).',
+          good: 'Pontuação de 7 a 10.',
+          clinicalNote: 'O Apgar descreve o estado do recém-nascido em cada momento. Isoladamente, não determina reanimação, diagnóstico de asfixia ou prognóstico individual. Registre as intervenções de reanimação realizadas.',
+          reference: 'Referências', available: 'Disponível em:', accessed: 'Acesso em: 26 out. 2026.',
+          legalTitle: 'Aviso Legal e Isenção de Responsabilidade',
+          developer: 'Desenvolvido por Adão L. L. Couto',
+          legal: 'Este software e todas as informações nele contidas são fornecidos exclusivamente com propósitos educacionais e de auxílio à referência médica. ESTE SISTEMA NÃO SUBSTITUI O JULGAMENTO CLÍNICO INDIVIDUAL, A ANAMNESE E O EXAME FÍSICO. As informações aqui apresentadas não devem ser utilizadas isoladamente para o diagnóstico, conduta ou tratamento de pacientes. A responsabilidade final por qualquer decisão clínica, prescrição ou intervenção é exclusiva do profissional de saúde assistente, devidamente habilitado. Os desenvolvedores não garantem a precisão absoluta de todos os dados e isentam-se de responsabilidade por quaisquer danos diretos, indiretos, materiais ou morais que resultem do uso inadequado, interpretação equivocada ou confiança exclusiva nas informações deste sistema. Pacientes e indivíduos leigos que utilizarem este software devem sempre buscar a orientação de um médico qualificado antes de tomar qualquer decisão sobre sua saúde.'
+        },
+        'en-US': {
+          pageTitle: 'Apgar Score Calculator', subtitle: 'Select the assessed signs at each minute of the examination.',
+          reset: 'Clear', resetTop: 'Clear data', language: 'Language', selectLanguage: 'Select language', backToTop: 'Back to top',
+          restoredTitle: 'Recovered data', restoredInstruction: 'Data from the previous session were recovered. Check the information before continuing.',
+           preexistingTitle:'Existing data',preexistingInstruction:'Some fields already contain data. Check the values before calculating.',reviewTitle:'Data requiring review',reviewInstruction:'Some recovered data require review. Check the highlighted fields.',previousTitle:'Previous results',previousInstruction:'Previous data and results were recovered.',previousInstructionSecond:'Confirm the information before using the results.',viewSummary:'Go to summary',followup:'Apgar score below 7 at 5 minutes: record the score every 5 minutes through 20 minutes.',progress:'criteria completed',
+          scoring: 'Scores by time point', summary: 'Summary', select: 'Select',
+          default: 'Not classified yet.', totalScore: 'Total score',
+          severe: 'Low score (0–3).', moderate: 'Intermediate score (4–6).',
+          good: 'Score of 7–10.',
+          clinicalNote: 'The Apgar score describes the newborn’s condition at each time point. Alone, it does not determine resuscitation, diagnose asphyxia, or predict an individual outcome. Document any resuscitation interventions performed.',
+          reference: 'References', available: 'Available at:', accessed: 'Accessed on: October 26, 2026.',
+          legalTitle: 'Legal Notice and Disclaimer',
+          developer: 'Developed by Adão L. L. Couto',
+          legal: 'This software and all information it contains are provided exclusively for educational purposes and as a medical reference aid. THIS SYSTEM DOES NOT REPLACE INDIVIDUAL CLINICAL JUDGMENT, MEDICAL HISTORY TAKING, OR PHYSICAL EXAMINATION. The information provided here must not be used in isolation for the diagnosis, management, or treatment of patients. Final responsibility for any clinical decision, prescription, or intervention rests solely with the appropriately licensed healthcare professional caring for the patient. The developers do not guarantee the absolute accuracy of all data and disclaim liability for any direct or indirect damage, material loss, or non-material harm resulting from misuse, misinterpretation, or exclusive reliance on information provided by this system. Patients and non-professional users of this software should always seek guidance from a qualified physician before making any decisions about their health.'
+        }
+      });
+      let currentLanguage = 'pt-BR';
+      function t(key) { return TEXTS[currentLanguage][key]; }
+      function timeTitle(time) {
+        return currentLanguage === 'en-US' ? EN_TIME_TITLES[time.id] : time.title;
+      }
+      function criterionLabel(criterion) {
+        return currentLanguage === 'en-US' ? EN_CRITERIA[criterion.key].label : criterion.label;
+      }
+      function optionLabel(criterion, option) {
+        return currentLanguage === 'en-US' ? EN_CRITERIA[criterion.key].options[option.value] : option.label;
+      }
+      function updateStaticLanguage() {
+        document.documentElement.lang = currentLanguage;
+        document.title = t('pageTitle');
+        document.getElementById('appTitle').textContent = t('pageTitle');
+        document.getElementById('appSubtitle').textContent = t('subtitle');
+        document.getElementById('btnLimpar').textContent = t('resetTop');
+        document.getElementById('btnLimparInferior').textContent = t('reset');
+                 renderRecoveryNotice();
+         document.getElementById('btnVerResumo').textContent = t('viewSummary');
+         document.getElementById('followupNote').textContent = t('followup');
+        document.getElementById('languageLabel').textContent = t('language');
+        document.getElementById('languageSelect').setAttribute('aria-label', t('selectLanguage'));
+        document.getElementById('languageSelect').value = currentLanguage;
+        document.getElementById('scoringHeader').textContent = t('scoring');
+        document.getElementById('summaryHeader').textContent = t('summary');
+        document.getElementById('apgarClinicalNote').textContent = t('clinicalNote');
+        [document.getElementById('btnTopoEntrada'), document.getElementById('btnTopoRodape')].forEach((button) => {
+          button.setAttribute('aria-label', t('backToTop'));
+          button.title = t('backToTop');
+        });
+        document.getElementById('referencesSummary').textContent = t('reference');
+        document.querySelectorAll('.reference-available').forEach(node => { node.textContent = t('available'); });
+        document.querySelectorAll('.reference-access').forEach(node => {
+          node.textContent = currentLanguage === 'en-US'
+            ? (node.dataset.accessEn || t('accessed'))
+            : (node.dataset.accessPt || TEXTS['pt-BR'].accessed);
+        });
+        document.querySelectorAll('[data-ref-pt][data-ref-en]').forEach(node => {
+          node.textContent = currentLanguage === 'en-US' ? node.dataset.refEn : node.dataset.refPt;
+        });
+        document.getElementById('legalSummary').textContent = t('legalTitle');
+        document.getElementById('legalContent').textContent = t('legal');
+        document.getElementById('developerName').textContent = t('developer');
+      }
+      function readLanguagePreference() {
+        try {
+          return window.localStorage.getItem(LANGUAGE_STORAGE_KEY) === 'en-US' ? 'en-US' : 'pt-BR';
+        } catch (_storageError) { return 'pt-BR'; }
+      }
+      function handleLanguageChange(event) {
+        const next = event.target.value;
+        if (next !== 'pt-BR' && next !== 'en-US') return;
+        if (next === currentLanguage) return;
+        const existingValues = {};
+        document.querySelectorAll('select[data-tempo]').forEach(element => {
+          existingValues[element.id] = element.value;
+        });
+        highlightTimers.forEach(timer => clearTimeout(timer));
+        highlightTimers.clear();
+        currentLanguage = next;
+        updateStaticLanguage();
+        buildInterface();
+        document.querySelectorAll('select[data-tempo]').forEach(element => {
+          if (Object.prototype.hasOwnProperty.call(existingValues, element.id)) {
+            element.value = existingValues[element.id];
+          }
+        });
+        outputTotals.clear();
+        DOM.status.textContent = '';
+        calculateAllTimes();
+        try { window.localStorage.setItem(LANGUAGE_STORAGE_KEY, next); }
+        catch (_storageError) { /* Language switching works without storage. */ }
+      }
+
       const DEFAULT_TEXT = 'Sem classificação ainda.';
       const EMPTY_VALUE_TEXT = '—';
       const BASE_VISIBLE_TIMES = new Set(['1min', '5min']);
-      const CONDITIONAL_FLOW = [
-        { source: '5min', target: '10min' },
-        { source: '10min', target: '15min' },
-        { source: '15min', target: '20min' }
-      ];
+      const FOLLOWUP_TIMES = ['10min', '15min', '20min'];
 
       // dom refs
       const DOM = {
@@ -495,20 +778,59 @@
         status: document.getElementById('apgarStatus')
       };
 
-      const outputTotals = new Map();
+             let recoveryNoticeType = null;
+       const outputTotals = new Map();
       const lastCompletedTotals = new Map();
       const highlightTimers = new Map();
       let keyboardSelection = null;
       let tabSelection = null;
+      const focusEntryValues = new WeakMap();
+      const justCompleted = new WeakSet();
+      function preferredScrollBehavior() {
+        return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      }
+      function positionFocusedControl(control) {
+        // Place the active selector just below the first quarter of the visible viewport.
+        // Use the visual viewport so the on-screen keyboard is accounted for.
+        const reposition = () => {
+          if (document.activeElement !== control) return;
+          const rect = control.getBoundingClientRect();
+          const viewport = window.visualViewport;
+          const height = viewport ? viewport.height : window.innerHeight;
+          const offset = viewport ? viewport.offsetTop : 0;
+          const targetTop = offset + height * 0.27;
+          const delta = rect.top - targetTop;
+          if (Math.abs(delta) > 3) {
+            window.scrollBy({ top: delta, behavior: preferredScrollBehavior() });
+          }
+        };
+        requestAnimationFrame(reposition);
+        // Keyboard resizing can occur after the focus animation starts.
+        if (window.visualViewport) requestAnimationFrame(() => requestAnimationFrame(reposition));
+      }
+      function scrollToSummary() {
+        document.getElementById('secaoResumo').scrollIntoView({
+          behavior: preferredScrollBehavior(), block: 'start', inline: 'nearest'
+        });
+      }
+      function scrollToTop() {
+        window.scrollTo({top: 0, behavior: preferredScrollBehavior()});
+      }
+      function trackFieldFocus(event) {
+        if (event.target.matches('select[data-tempo]')) {
+          focusEntryValues.set(event.target, event.target.value);
+          justCompleted.delete(event.target);
+        }
+      }
 
       // parsers
-      function parseScoreValue(rawValue) {
-        return rawValue === '' ? null : Number(rawValue);
+             function parseScoreValue(rawValue) {
+         return ['0','1','2'].includes(rawValue) ? Number(rawValue) : null;
       }
 
       // validators
       function isTimeComplete(rawValues) {
-        return rawValues.length > 0 && rawValues.every((rawValue) => rawValue !== '');
+        return rawValues.length === CRITERIA.length && rawValues.every(rawValue => parseScoreValue(rawValue) !== null);
       }
 
       // calculators
@@ -525,7 +847,7 @@
           return {
             cssClass: 'baixo',
             badgeClass: 'baixo',
-            text: 'Pontuação gravemente deprimida.'
+            text: t('severe')
           };
         }
 
@@ -533,32 +855,23 @@
           return {
             cssClass: 'intermediario',
             badgeClass: 'intermediario',
-            text: 'Pontuação moderadamente deprimida.'
+            text: t('moderate')
           };
         }
 
         return {
           cssClass: 'bom',
           badgeClass: 'bom',
-          text: 'Boa adaptação inicial.'
+          text: t('good')
         };
       }
 
       function calculateVisibleTimesFromTotals(totals) {
         const visibleTimes = new Set(BASE_VISIBLE_TIMES);
-
+        // SBP 2026: Apgar <7 at 5 minutes requires recordings every 5 minutes through 20 minutes.
         if (totals['5min'] != null && totals['5min'] < 7) {
-          visibleTimes.add('10min');
+          FOLLOWUP_TIMES.forEach(timeId => visibleTimes.add(timeId));
         }
-
-        if (visibleTimes.has('10min') && totals['10min'] != null && totals['10min'] < 7) {
-          visibleTimes.add('15min');
-        }
-
-        if (visibleTimes.has('15min') && totals['15min'] != null && totals['15min'] < 7) {
-          visibleTimes.add('20min');
-        }
-
         return visibleTimes;
       }
 
@@ -569,34 +882,36 @@
 
       function formatInterpretationText(classification, total) {
         if (classification == null || total == null) {
-          return DEFAULT_TEXT;
+          return t('default');
         }
 
-        return `${classification.text} Escore total: ${total}/10.`;
+        return `${classification.text} ${t('totalScore')}: ${total}/10.`;
       }
 
       function formatSummaryText(classification) {
-        return classification == null ? DEFAULT_TEXT : classification.text;
+        return classification == null ? t('default') : classification.text;
       }
 
       function formatProgressText(rawValues) {
         const filled = rawValues.filter((rawValue) => rawValue !== '').length;
-        return `${filled} de ${CRITERIA.length} critérios preenchidos`;
+        return currentLanguage === 'en-US'
+          ? `${filled} of ${CRITERIA.length} criteria completed`
+          : `${filled} de ${CRITERIA.length} critérios preenchidos`;
       }
 
       // ui renderers
-      function createOptionMarkup(option) {
-        return `<option value="${option.value}">${option.value} — ${option.label}</option>`;
+      function createOptionMarkup(option, criterion) {
+        return `<option value="${option.value}">${option.value} — ${optionLabel(criterion, option)}</option>`;
       }
 
       function createCriterionMarkup(timeId, criterion) {
-        const optionsMarkup = ['<option value="">Selecione</option>']
-          .concat(criterion.options.map(createOptionMarkup))
+        const optionsMarkup = [`<option value="">${t('select')}</option>`]
+          .concat(criterion.options.map(option => createOptionMarkup(option, criterion)))
           .join('');
 
         return `
           <div class="campo">
-            <label for="${timeId}_${criterion.key}">${criterion.label}</label>
+            <label for="${timeId}_${criterion.key}">${criterionLabel(criterion)}</label>
             <select id="${timeId}_${criterion.key}" data-tempo="${timeId}" data-criterio="${criterion.key}">
               ${optionsMarkup}
             </select>
@@ -608,13 +923,13 @@
         const criteriaMarkup = CRITERIA.map((criterion) => createCriterionMarkup(time.id, criterion)).join('');
 
         return `
-          <article class="tempo-card" id="card_${time.id}" data-tempo="${time.id}" role="group" aria-labelledby="titulo_${time.id}">
+          <article class="tempo-card ${FOLLOWUP_TIMES.includes(time.id) ? 'followup-time' : ''}" id="card_${time.id}" data-tempo="${time.id}" role="group" aria-labelledby="titulo_${time.id}">
             <div class="tempo-header">
-              <div class="tempo-titulo" id="titulo_${time.id}">${time.title}</div>
+              <div class="tempo-titulo" id="titulo_${time.id}">${timeTitle(time)}</div>
               <div class="badge" id="badge_${time.id}">${EMPTY_VALUE_TEXT}</div>
             </div>
             ${criteriaMarkup}
-            <div id="interpretacao_${time.id}" class="interpretacao">${formatProgressText([])}</div>
+                         <div id="interpretacao_${time.id}" class="interpretacao">${formatProgressText([])}</div>
           </article>
         `;
       }
@@ -622,9 +937,9 @@
       function createSummaryCardMarkup(time) {
         return `
           <div class="resumo-item" id="resumo_${time.id}" data-tempo="${time.id}">
-            <div class="tempo">${time.title}</div>
+            <div class="tempo">${timeTitle(time)}</div>
             <div class="valor">${EMPTY_VALUE_TEXT}</div>
-            <div class="texto">${DEFAULT_TEXT}</div>
+            <div class="texto">${t('default')}</div>
           </div>
         `;
       }
@@ -666,7 +981,7 @@
       function clearTimeHighlight(timeId) {
         clearTimeout(highlightTimers.get(timeId));
         highlightTimers.delete(timeId);
-        getBadgeElement(timeId).classList.remove('is-recalculated');
+                 getBadgeElement(timeId).classList.remove('is-recalculated');
         getSummaryCardElement(timeId).querySelector('.valor').classList.remove('is-recalculated');
       }
 
@@ -686,11 +1001,11 @@
         badgeElement.textContent = EMPTY_VALUE_TEXT;
         badgeElement.className = 'badge';
 
-        interpretationElement.textContent = formatProgressText(getRawValuesForTime(timeId));
+                 interpretationElement.textContent = formatProgressText(getRawValuesForTime(timeId));
         interpretationElement.className = 'interpretacao';
 
         summaryElement.querySelector('.valor').textContent = EMPTY_VALUE_TEXT;
-        summaryElement.querySelector('.texto').textContent = DEFAULT_TEXT;
+        summaryElement.querySelector('.texto').textContent = t('default');
         outputTotals.set(timeId, null);
       }
 
@@ -699,10 +1014,10 @@
         const interpretationElement = getInterpretationElement(timeId);
         const summaryElement = getSummaryCardElement(timeId);
 
-        const previousTotal = outputTotals.get(timeId);
+         const previousTotal = outputTotals.get(timeId);
         const previousCompletedTotal = lastCompletedTotals.get(timeId);
 
-        if (previousTotal !== total) {
+                 { // Always synchronize rendered result, including after language changes and restoration.
           badgeElement.textContent = formatBadgeValue(total);
           badgeElement.className = `badge ${classification.badgeClass}`;
 
@@ -757,15 +1072,16 @@
       function getVisibleTimes() {
         const totals = {};
 
-        CONDITIONAL_FLOW.forEach(({ source }) => {
-          totals[source] = calculateCompletedTotal(getRawValuesForTime(source));
-        });
+        totals['5min'] = calculateCompletedTotal(getRawValuesForTime('5min'));
 
         return calculateVisibleTimesFromTotals(totals);
       }
 
-      function applyVisibilityRules() {
-        const visibleTimes = getVisibleTimes();
+             function applyVisibilityRules() {
+         const visibleTimes = getVisibleTimes();
+         const note = document.getElementById('followupNote');
+         note.classList.toggle('is-hidden', !visibleTimes.has('10min'));
+         note.textContent = t('followup');
 
         TIMES.forEach((time) => {
           const shouldShow = visibleTimes.has(time.id);
@@ -773,10 +1089,17 @@
         });
       }
 
+      function updateSelectionColors() {
+        document.querySelectorAll('select[data-tempo]').forEach((selectElement) => {
+          selectElement.classList.toggle('is-unselected', selectElement.value === '');
+        });
+      }
+
       function calculateAllTimes() {
         const previousTotals = new Map(outputTotals);
         const announcements = [];
         applyVisibilityRules();
+        updateSelectionColors();
 
         TIMES.forEach((time) => {
           const isVisible = !getTimeCardElement(time.id).classList.contains('is-hidden');
@@ -786,7 +1109,7 @@
             const total = outputTotals.get(time.id);
             const previousTotal = previousTotals.get(time.id);
             if (total !== previousTotal && (total != null || previousTotal != null)) {
-              announcements.push(`${time.title}: ${getInterpretationElement(time.id).textContent}`);
+              announcements.push(`${timeTitle(time)}: ${getInterpretationElement(time.id).textContent}`);
             }
           } else {
             resetTimeOutput(time.id);
@@ -806,12 +1129,12 @@
         TIMES.forEach((time) => clearTimeSelections(time.id));
         DOM.status.textContent = '';
         calculateAllTimes();
-        document.getElementById(`${TIMES[0].id}_${CRITERIA[0].key}`).focus();
+                 document.querySelectorAll('select.recovery-invalid').forEach(element=>element.classList.remove('recovery-invalid'));
       }
 
 
       // Minimal input-state persistence for Android WebView and normal browsers.
-      // Scoring, conditional time logic and all clinical labels remain unchanged.
+      // Restore valid selections, without treating the application defaults as patient data.
       const APP_STATE_SCHEMA_VERSION = 1;
       const APP_STATE_STORAGE_KEY = 'apgar_inputs_v1';
       function captureCurrentState() {
@@ -819,13 +1142,36 @@
         document.querySelectorAll('select[data-tempo]').forEach((element) => {
           selections[element.id] = element.value;
         });
-        return { schema: APP_STATE_SCHEMA_VERSION, selections, scrollY: Math.max(0, window.scrollY || 0) };
+        const totals = {};
+         TIMES.forEach(time => { const total=calculateCompletedTotal(getRawValuesForTime(time.id)); if(total!==null) totals[time.id]=total; });
+         return { schema: APP_STATE_SCHEMA_VERSION, selections, totals, scrollY: Math.max(0, window.scrollY || 0) };
       }
       function persistCurrentState() {
         try { localStorage.setItem(APP_STATE_STORAGE_KEY, JSON.stringify(captureCurrentState())); }
         catch (_storageError) { /* Keep the clinical form usable even if storage is unavailable. */ }
       }
-      function restoreCurrentState() {
+             function renderRecoveryNotice() {
+         const notice = document.getElementById('restoredDataNotice');
+         notice.classList.toggle('is-hidden', !recoveryNoticeType);
+         notice.classList.toggle('warning', recoveryNoticeType === 'review');
+         if (!recoveryNoticeType) return;
+         const keys = {recovered:['restoredTitle','restoredInstruction'],preexisting:['preexistingTitle','preexistingInstruction'],review:['reviewTitle','reviewInstruction'],previous:['previousTitle','previousInstruction']};
+         const [title,instruction] = keys[recoveryNoticeType];
+         document.getElementById('restoredDataTitle').textContent=t(title);
+         document.getElementById('restoredDataInstruction').textContent=t(instruction);
+          const secondLine=document.getElementById('restoredDataInstructionSecond');
+          secondLine.classList.toggle('is-hidden',recoveryNoticeType!=='previous');
+          secondLine.textContent=recoveryNoticeType==='previous'?t('previousInstructionSecond'):'';
+         document.getElementById('restoredDataIcon').innerHTML = recoveryNoticeType === 'review' ? '<path d="M12 3 2 21h20L12 3zM12 9v5M12 18h.01"/>' : '<circle cx="12" cy="12" r="10"/><path d="M12 11v5M12 8h.01"/>';
+       }
+       function setRecoveryNotice(type) {recoveryNoticeType=type;renderRecoveryNotice();}
+       function hasClinicalSelections(){return Array.from(document.querySelectorAll('select[data-tempo]')).some(el=>el.value!=='');}
+       function refreshRecoveryNoticeAfterEdit(){
+         if (!recoveryNoticeType) return;
+         if (!hasClinicalSelections()) setRecoveryNotice(null);
+         else setRecoveryNotice(null);
+       }
+function restoreCurrentState() {
         let snapshot;
         try {
           const saved = localStorage.getItem(APP_STATE_STORAGE_KEY);
@@ -835,49 +1181,75 @@
         if (!snapshot || snapshot.schema !== APP_STATE_SCHEMA_VERSION ||
             !snapshot.selections || typeof snapshot.selections !== 'object') return false;
         let restored = 0;
+                 let restoredClinicalData = false;
+         let invalidRestoredData = false;
         document.querySelectorAll('select[data-tempo]').forEach((element) => {
           const proposed = snapshot.selections[element.id];
           if (typeof proposed === 'string' && ['', '0', '1', '2'].includes(proposed)) {
             element.value = proposed;
             restored++;
-          }
+                         if (proposed !== '') restoredClinicalData = true;
+          } else if (proposed !== undefined) { invalidRestoredData = true; element.value = ''; element.classList.add('recovery-invalid'); }
         });
         calculateAllTimes();
-        if (Number.isFinite(snapshot.scrollY) && snapshot.scrollY >= 0) {
-          requestAnimationFrame(() => window.scrollTo(0, snapshot.scrollY));
-        }
+                 const priorResults = snapshot.totals && typeof snapshot.totals==='object' &&
+           TIMES.some(time => Number.isInteger(snapshot.totals[time.id]) &&
+             snapshot.totals[time.id]===calculateCompletedTotal(getRawValuesForTime(time.id)));
+         setRecoveryNotice(invalidRestoredData ? 'review' : priorResults ? 'previous' : restoredClinicalData ? 'recovered' : null);
+         // Saved scroll coordinates are deliberately ignored on every initialization.
         return restored > 0;
       }
 
       // bootstrap
 function handleClearClick() {
         clearAllSelections();
+                 setRecoveryNotice(null);
         persistCurrentState();
       }
 
       function handleFieldChange(event) {
         if (event.target.matches('select[data-tempo]')) {
-          calculateAllTimes();
-          persistCurrentState();
-          if (keyboardSelection !== event.target && tabSelection !== event.target) {
-            focusNextSelection(event.target);
+                     const field = event.target;
+           field.classList.remove('recovery-invalid');
+           if (focusEntryValues.get(field) === '' && field.value !== '') justCompleted.add(field);
+          else justCompleted.delete(field);
+                     calculateAllTimes();
+           refreshRecoveryNoticeAfterEdit();
+           persistCurrentState();
+           if (tabSelection !== field) {
+            focusNextSelection(field);
           }
         }
       }
 
       function focusNextSelection(currentSelect) {
         if (currentSelect.value === '') return;
-        const visibleSelects = Array.from(document.querySelectorAll('select[data-tempo]'))
-          .filter((selectElement) => !selectElement.disabled &&
-            !getTimeCardElement(selectElement.dataset.tempo).classList.contains('is-hidden'));
-        const currentIndex = visibleSelects.indexOf(currentSelect);
+        const currentTimeId = currentSelect.dataset.tempo;
+        const currentFields = getSelectElementsForTime(currentTimeId).filter(el => !el.disabled);
+        const currentIndex = currentFields.indexOf(currentSelect);
         if (currentIndex < 0) return;
-        const nextSelect = visibleSelects.slice(currentIndex + 1)
-          .concat(visibleSelects.slice(0, currentIndex + 1))
-          .find((selectElement) => selectElement.value === '');
-        if (!nextSelect) return;
+
+        // Stay within the same minute until every criterion is selected.
+        // After editing an earlier item, prefer the next empty item; if there
+        // is none ahead, revisit the first still-empty item in this minute.
+        const missing = currentFields.filter(el => el.value === '');
+        let nextSelect;
+        if (missing.length) {
+          nextSelect = currentFields.slice(currentIndex + 1).find(el => el.value === '') || missing[0];
+        } else {
+          // Only a fully completed minute may advance to the next visible minute.
+          const visibleTimeIds = TIMES.filter(time =>
+            !getTimeCardElement(time.id).classList.contains('is-hidden')).map(time => time.id);
+          const nextTimeId = visibleTimeIds[visibleTimeIds.indexOf(currentTimeId) + 1];
+          if (nextTimeId) {
+            const nextFields = getSelectElementsForTime(nextTimeId).filter(el => !el.disabled);
+            nextSelect = nextFields.find(el => el.value === '') || nextFields[0];
+          }
+        }
+        // Never jump to the summary as a consequence of selecting a field.
+        if (!nextSelect || nextSelect === currentSelect) return;
         nextSelect.focus({ preventScroll: true });
-        nextSelect.closest('.campo').scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+        positionFocusedControl(nextSelect);
       }
 
       function handleSelectionKeyDown(event) {
@@ -900,7 +1272,7 @@ function handleClearClick() {
           keyboardSelection = null;
           tabSelection = null;
           calculateAllTimes();
-          focusNextSelection(event.target);
+          if (document.activeElement === event.target) focusNextSelection(event.target);
         }
       }
 
@@ -910,7 +1282,13 @@ function handleClearClick() {
       }
 
       function bindEvents() {
-DOM.clearButton.addEventListener('click', handleClearClick);
+        DOM.clearButton.addEventListener('click', handleClearClick);
+                 document.getElementById('btnVerResumo').addEventListener('click', scrollToSummary);
+         document.getElementById('btnTopoEntrada').addEventListener('click', scrollToTop);
+        document.getElementById('btnTopoRodape').addEventListener('click', scrollToTop);
+        document.addEventListener('focusin', trackFieldFocus);
+        document.getElementById('btnLimparInferior').addEventListener('click', handleClearClick);
+        document.getElementById('languageSelect').addEventListener('change', handleLanguageChange);
         document.addEventListener('change', handleFieldChange);
         document.addEventListener('keydown', handleSelectionKeyDown);
         document.addEventListener('keyup', handleSelectionKeyUp);
@@ -922,11 +1300,17 @@ DOM.clearButton.addEventListener('click', handleClearClick);
       }
 
       function initializeScreen() {
+        currentLanguage = readLanguagePreference();
+        updateStaticLanguage();
         buildInterface();
         bindEvents();
-        if (!restoreCurrentState()) {
-          clearAllSelections();
+                 if (!restoreCurrentState()) {
+           calculateAllTimes();
+           setRecoveryNotice(null);
         }
+         // No focus or results navigation during startup.
+         window.scrollTo({top:0,behavior:'instant'});
+         requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
       }
 
       initializeScreen();
